@@ -22,10 +22,10 @@ internal class DeclarationExplicitReturnType(private val rule: Rule) {
         const val KEY_CHECK_PRIVATE = "checkPrivate"
     }
 
-    private val isPublicCheckEnabled = getBoolean(KEY_CHECK_PUBLIC)
-    private val isInternalCheckEnabled = getBoolean(KEY_CHECK_INTERNAL)
-    private val isProtectedCheckEnabled = getBoolean(KEY_CHECK_PROTECTED)
-    private val isPrivateCheckEnabled = getBoolean(KEY_CHECK_PRIVATE)
+    private val isPublicCheckEnabled = getBoolean(KEY_CHECK_PUBLIC, true)
+    private val isInternalCheckEnabled = getBoolean(KEY_CHECK_INTERNAL, true)
+    private val isProtectedCheckEnabled = getBoolean(KEY_CHECK_PROTECTED, false)
+    private val isPrivateCheckEnabled = getBoolean(KEY_CHECK_PRIVATE, false)
 
     fun visitDeclaration(declaration: KtNamedDeclaration) {
         val classOrObject = declaration.containingClassOrObject
@@ -68,7 +68,7 @@ internal class DeclarationExplicitReturnType(private val rule: Rule) {
         rule.report(CodeSmell(rule.issue, Entity.from(function), message))
     }
 
-    private fun getBoolean(key: String): Boolean {
-        return rule.valueOrDefault(key, true)
+    private fun getBoolean(key: String, default: Boolean): Boolean {
+        return rule.valueOrDefault(key, default)
     }
 }
