@@ -62,14 +62,14 @@ Compliant Code
 fun getProperties(): Map<String, String> = delegate.getProperties()
 ```
 
-**parameters**
+parameters
 
 * `checkPublic` (default: true)
 * `checkInternal` (default: true)
 * `checkProtected` (default: false)
 * `checkPrivate` (default: false)
 
-**unit-tests**
+unit-tests
 
 * [Function](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/SpecifyFunctionExplicitReturnTypeTest.kt)
 * [Property](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/SpecifyPropertyExplicitReturnTypeTest.kt)
@@ -94,14 +94,14 @@ class User(val name: String, val email: String)
 fun getUser(): User = createUser()
 ```
 
-**parameters**
+parameters
 
 * `checkPublic` (default: true)
 * `checkInternal` (default: true)
 * `checkProtected` (default: false)
 * `checkPrivate` (default: false)
 
-**unit-tests**
+unit-tests
 
 * [Function](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/AvoidFunctionTupleReturnTypeTest.kt)
 * [Property](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/AvoidPropertyTupleReturnTypeTest.kt)
@@ -116,6 +116,6 @@ fun getUser(): User = createUser()
 The visibility of a declaration is based on its modifier and the modifier of the class/object in which it is found. A
 common case is disabling the rule for private or protected declaration.
 
-**unit-tests**
+unit-tests
 
 * [Visibility](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/DeclarationVisibilityCheckTest.kt)
