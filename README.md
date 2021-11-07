@@ -18,6 +18,10 @@ AleksanderShRuleSet:
     active: true
   SpecifyPropertyExplicitReturnType:
     active: true
+  AvoidFunctionTupleReturnType:
+    active: true
+  AvoidPropertyTupleReturnType:
+    active: true
 ```
 
 #### Specifying as detekt plugin
@@ -25,12 +29,18 @@ AleksanderShRuleSet:
 ###### CLI
 
 ```
-detekt-cli" -p "aleksandersh-detekt-ruleset-1.0.jar"
+detekt-cli" --plugins "aleksandersh-detekt-ruleset-0.1.0.jar"
 ```
 
 ###### Gradle
 
 TBD
+
+###### CLI type resolution
+
+```
+detekt-cli" --jvm-target 11 --classpath "lib/kotlin-stdlib-1.5.21.jar"
+```
 
 ## Rules
 
@@ -40,14 +50,72 @@ In most cases, functions or properties without an explicit type are harder to un
 implicit contract, it can lead to errors. Rule checks whether the type of function/property return value is explicitly
 specified.
 
+Noncompliant Code
+
+```
+fun getProperties() = delegate.getProperties()
+```
+
+Compliant Code
+
+```
+fun getProperties(): Map<String, String> = delegate.getProperties()
+```
+
 **parameters**
 
-* `checkPublic` (default: true) - apply rule for public declarations
-* `checkInternal` (default: true) - apply rule for internal declarations
-* `checkProtected` (default: false) - apply rule for protected declarations
-* `checkPrivate` (default: false) - apply rule for private declarations
+* `checkPublic` (default: true)
+* `checkInternal` (default: true)
+* `checkProtected` (default: false)
+* `checkPrivate` (default: false)
+
+**unit-tests**
+
+* [Function](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/SpecifyFunctionExplicitReturnTypeTest.kt)
+* [Property](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/SpecifyPropertyExplicitReturnTypeTest.kt)
+
+### AvoidFunctionTupleReturnType AvoidPropertyTupleReturnType
+
+**[Requires Type Resolution](https://detekt.github.io/detekt/type-resolution.html)**
+
+It is more difficult to understand the return values if they are composed in a tuple, prefer to use custom classes
+instead.
+
+Noncompliant Code
+
+```
+fun getUser(): Pair<String, String> = createUser()
+```
+
+Compliant Code
+
+```
+class User(val name: String, val email: String)
+fun getUser(): User = createUser()
+```
+
+**parameters**
+
+* `checkPublic` (default: true)
+* `checkInternal` (default: true)
+* `checkProtected` (default: false)
+* `checkPrivate` (default: false)
+
+**unit-tests**
+
+* [Function](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/AvoidFunctionTupleReturnTypeTest.kt)
+* [Property](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/AvoidPropertyTupleReturnTypeTest.kt)
+
+### Visibility parameters
+
+* `checkPublic` - apply rule for public declarations
+* `checkInternal` - apply rule for internal declarations
+* `checkProtected` - apply rule for protected declarations
+* `checkPrivate` - apply rule for private declarations
 
 The visibility of a declaration is based on its modifier and the modifier of the class/object in which it is found. A
 common case is disabling the rule for private or protected declaration.
 
-[Unit-tests](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/SpecifyFunctionExplicitReturnTypeTest.kt)
+**unit-tests**
+
+* [Visibility](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/DeclarationVisibilityCheckTest.kt)

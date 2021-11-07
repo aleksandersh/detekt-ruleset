@@ -9,6 +9,8 @@ class DeclarationExplicitReturnTypeTestConfig(
     private val isPrivateEnabled: Boolean
 ) : Config {
 
+    constructor(isEnabled: Boolean) : this(isEnabled, isEnabled, isEnabled, isEnabled)
+
     override fun subConfig(key: String): Config {
         return this
     }
@@ -16,10 +18,10 @@ class DeclarationExplicitReturnTypeTestConfig(
     @Suppress("UNCHECKED_CAST")
     override fun <T : Any> valueOrNull(key: String): T? {
         return when (key) {
-            DeclarationExplicitReturnType.KEY_CHECK_PUBLIC -> isPublicEnabled as T?
-            DeclarationExplicitReturnType.KEY_CHECK_INTERNAL -> isInternalEnabled as T?
-            DeclarationExplicitReturnType.KEY_CHECK_PROTECTED -> isProtectedEnabled as T?
-            DeclarationExplicitReturnType.KEY_CHECK_PRIVATE -> isPrivateEnabled as T?
+            DeclarationVisibilityCheck.KEY_CHECK_PUBLIC -> isPublicEnabled as T?
+            DeclarationVisibilityCheck.KEY_CHECK_INTERNAL -> isInternalEnabled as T?
+            DeclarationVisibilityCheck.KEY_CHECK_PROTECTED -> isProtectedEnabled as T?
+            DeclarationVisibilityCheck.KEY_CHECK_PRIVATE -> isPrivateEnabled as T?
             Config.ACTIVE_KEY -> true as T?
             else -> null
         }

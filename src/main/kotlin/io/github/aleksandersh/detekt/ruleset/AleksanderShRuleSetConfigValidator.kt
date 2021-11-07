@@ -1,8 +1,6 @@
 package io.github.aleksandersh.detekt.ruleset
 
-import io.github.aleksandersh.detekt.ruleset.rule.DeclarationExplicitReturnType
-import io.github.aleksandersh.detekt.ruleset.rule.SpecifyFunctionExplicitReturnType
-import io.github.aleksandersh.detekt.ruleset.rule.SpecifyPropertyExplicitReturnType
+import io.github.aleksandersh.detekt.ruleset.rule.*
 import io.gitlab.arturbosch.detekt.api.Config
 import io.gitlab.arturbosch.detekt.api.ConfigValidator
 import io.gitlab.arturbosch.detekt.api.Notification
@@ -20,16 +18,28 @@ class AleksanderShRuleSetConfigValidator : ConfigValidator {
 
     private fun validateMainConfig(config: Config, notifications: MutableList<Notification>) {
         config.checkConfig(SpecifyFunctionExplicitReturnType.RULE_ID, notifications) { ruleConfig ->
-            ruleConfig.checkBooleanProperty(DeclarationExplicitReturnType.KEY_CHECK_PUBLIC, notifications)
-            ruleConfig.checkBooleanProperty(DeclarationExplicitReturnType.KEY_CHECK_INTERNAL, notifications)
-            ruleConfig.checkBooleanProperty(DeclarationExplicitReturnType.KEY_CHECK_PROTECTED, notifications)
-            ruleConfig.checkBooleanProperty(DeclarationExplicitReturnType.KEY_CHECK_PRIVATE, notifications)
+            ruleConfig.checkBooleanProperty(DeclarationVisibilityCheck.KEY_CHECK_PUBLIC, notifications)
+            ruleConfig.checkBooleanProperty(DeclarationVisibilityCheck.KEY_CHECK_INTERNAL, notifications)
+            ruleConfig.checkBooleanProperty(DeclarationVisibilityCheck.KEY_CHECK_PROTECTED, notifications)
+            ruleConfig.checkBooleanProperty(DeclarationVisibilityCheck.KEY_CHECK_PRIVATE, notifications)
         }
         config.checkConfig(SpecifyPropertyExplicitReturnType.RULE_ID, notifications) { ruleConfig ->
-            ruleConfig.checkBooleanProperty(DeclarationExplicitReturnType.KEY_CHECK_PUBLIC, notifications)
-            ruleConfig.checkBooleanProperty(DeclarationExplicitReturnType.KEY_CHECK_INTERNAL, notifications)
-            ruleConfig.checkBooleanProperty(DeclarationExplicitReturnType.KEY_CHECK_PROTECTED, notifications)
-            ruleConfig.checkBooleanProperty(DeclarationExplicitReturnType.KEY_CHECK_PRIVATE, notifications)
+            ruleConfig.checkBooleanProperty(DeclarationVisibilityCheck.KEY_CHECK_PUBLIC, notifications)
+            ruleConfig.checkBooleanProperty(DeclarationVisibilityCheck.KEY_CHECK_INTERNAL, notifications)
+            ruleConfig.checkBooleanProperty(DeclarationVisibilityCheck.KEY_CHECK_PROTECTED, notifications)
+            ruleConfig.checkBooleanProperty(DeclarationVisibilityCheck.KEY_CHECK_PRIVATE, notifications)
+        }
+        config.checkConfig(AvoidFunctionTupleReturnType.RULE_ID, notifications) { ruleConfig ->
+            ruleConfig.checkBooleanProperty(DeclarationVisibilityCheck.KEY_CHECK_PUBLIC, notifications)
+            ruleConfig.checkBooleanProperty(DeclarationVisibilityCheck.KEY_CHECK_INTERNAL, notifications)
+            ruleConfig.checkBooleanProperty(DeclarationVisibilityCheck.KEY_CHECK_PROTECTED, notifications)
+            ruleConfig.checkBooleanProperty(DeclarationVisibilityCheck.KEY_CHECK_PRIVATE, notifications)
+        }
+        config.checkConfig(AvoidPropertyTupleReturnType.RULE_ID, notifications) { ruleConfig ->
+            ruleConfig.checkBooleanProperty(DeclarationVisibilityCheck.KEY_CHECK_PUBLIC, notifications)
+            ruleConfig.checkBooleanProperty(DeclarationVisibilityCheck.KEY_CHECK_INTERNAL, notifications)
+            ruleConfig.checkBooleanProperty(DeclarationVisibilityCheck.KEY_CHECK_PROTECTED, notifications)
+            ruleConfig.checkBooleanProperty(DeclarationVisibilityCheck.KEY_CHECK_PRIVATE, notifications)
         }
     }
 

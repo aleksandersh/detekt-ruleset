@@ -1,5 +1,7 @@
 package io.github.aleksandersh.detekt.ruleset
 
+import io.github.aleksandersh.detekt.ruleset.rule.AvoidFunctionTupleReturnType
+import io.github.aleksandersh.detekt.ruleset.rule.AvoidPropertyTupleReturnType
 import io.github.aleksandersh.detekt.ruleset.rule.SpecifyFunctionExplicitReturnType
 import io.github.aleksandersh.detekt.ruleset.rule.SpecifyPropertyExplicitReturnType
 import io.gitlab.arturbosch.detekt.api.Config
@@ -19,7 +21,9 @@ class AleksanderShRuleSetProvider : RuleSetProvider {
         return RuleSet(
             ruleSetId, listOf(
                 SpecifyFunctionExplicitReturnType(config),
-                SpecifyPropertyExplicitReturnType(config)
+                SpecifyPropertyExplicitReturnType(config),
+                AvoidFunctionTupleReturnType(config),
+                AvoidPropertyTupleReturnType(config)
             )
         )
     }

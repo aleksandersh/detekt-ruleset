@@ -14,16 +14,16 @@ class SpecifyFunctionExplicitReturnType(config: Config = Config.empty) : Rule(co
 
     override val issue: Issue = createIssue()
 
-    private val declarationExplicitReturnType = DeclarationExplicitReturnType(this)
+    private val declarationVisibilityCheck = DeclarationVisibilityCheck(this)
 
     override fun visitNamedFunction(function: KtNamedFunction) {
         if (!function.isLocal &&
             !isClassLocal(function) &&
-            hasExpressionBodyWithoutExplicitReturnType(function)
+            hasExpressionBodyWithoutExplicitReturnType(function) &&
+            declarationVisibilityCheck.checkVisibility(function)
         ) {
-            declarationExplicitReturnType.visitDeclaration(function)
+            reportCodeSmell(function)
         }
-        super.visitNamedFunction(function)
     }
 
     private fun isClassLocal(declaration: KtNamedDeclaration): Boolean {
@@ -38,5 +38,10 @@ class SpecifyFunctionExplicitReturnType(config: Config = Config.empty) : Rule(co
         val description = "Functions should have an explicit return type. " +
                 "Inferred return type can easily be changed by mistake which may lead to breaking changes."
         return Issue(RULE_ID, Severity.CodeSmell, description, Debt(0, 0, 1))
+    }
+
+    private fun reportCodeSmell(declaration: KtNamedDeclaration) {
+        val message = "Function '${declaration.nameAsSafeName}' without explicit return type."
+        report(CodeSmell(issue, Entity.atName(declaration), message))
     }
 }

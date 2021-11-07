@@ -1,7 +1,5 @@
 package io.github.aleksandersh.detekt.ruleset.rule
 
-import io.gitlab.arturbosch.detekt.api.CodeSmell
-import io.gitlab.arturbosch.detekt.api.Entity
 import io.gitlab.arturbosch.detekt.api.Rule
 import io.gitlab.arturbosch.detekt.rules.isInternal
 import org.jetbrains.kotlin.psi.KtClassOrObject
@@ -10,9 +8,8 @@ import org.jetbrains.kotlin.psi.psiUtil.containingClassOrObject
 import org.jetbrains.kotlin.psi.psiUtil.isPrivate
 import org.jetbrains.kotlin.psi.psiUtil.isProtected
 import org.jetbrains.kotlin.psi.psiUtil.isPublic
-import java.util.*
 
-internal class DeclarationExplicitReturnType(private val rule: Rule) {
+internal class DeclarationVisibilityCheck(private val rule: Rule) {
 
     companion object {
 
@@ -27,22 +24,12 @@ internal class DeclarationExplicitReturnType(private val rule: Rule) {
     private val isProtectedCheckEnabled = getBoolean(KEY_CHECK_PROTECTED, false)
     private val isPrivateCheckEnabled = getBoolean(KEY_CHECK_PRIVATE, false)
 
-    fun visitDeclaration(declaration: KtNamedDeclaration) {
+    fun checkVisibility(declaration: KtNamedDeclaration): Boolean {
         val classOrObject = declaration.containingClassOrObject
-        when {
-            isPublicCheckEnabled && isPublic(declaration, classOrObject) -> {
-                reportCodeSmell(declaration, "Public")
-            }
-            isInternalCheckEnabled && isInternal(declaration, classOrObject) -> {
-                reportCodeSmell(declaration, "Internal")
-            }
-            isProtectedCheckEnabled && declaration.isProtected() -> {
-                reportCodeSmell(declaration, "Protected")
-            }
-            isPrivateCheckEnabled && isPrivate(declaration, classOrObject) -> {
-                reportCodeSmell(declaration, "private")
-            }
-        }
+        return isPublicCheckEnabled && isPublic(declaration, classOrObject) ||
+                isInternalCheckEnabled && isInternal(declaration, classOrObject) ||
+                isProtectedCheckEnabled && declaration.isProtected() ||
+                isPrivateCheckEnabled && isPrivate(declaration, classOrObject)
     }
 
     private fun isPublic(declaration: KtNamedDeclaration, classOrObject: KtClassOrObject?): Boolean {
@@ -50,22 +37,18 @@ internal class DeclarationExplicitReturnType(private val rule: Rule) {
     }
 
     private fun isInternal(declaration: KtNamedDeclaration, classOrObject: KtClassOrObject?): Boolean {
-        return isAboveInternal(declaration) && (classOrObject == null || isAboveInternal(classOrObject))
-    }
-
-    private fun isAboveInternal(declaration: KtNamedDeclaration): Boolean {
-        return declaration.isInternal() || declaration.isPublic
+        val isDeclarationInternal = declaration.isInternal()
+        if (classOrObject == null) {
+            return isDeclarationInternal
+        }
+        val isClassOrObjectInternal = classOrObject.isInternal()
+        return isDeclarationInternal && isClassOrObjectInternal ||
+                isDeclarationInternal && classOrObject.isPublic ||
+                isClassOrObjectInternal && declaration.isPublic
     }
 
     private fun isPrivate(declaration: KtNamedDeclaration, classOrObject: KtClassOrObject?): Boolean {
         return declaration.isPrivate() || (classOrObject == null || classOrObject.isPrivate())
-    }
-
-    private fun reportCodeSmell(function: KtNamedDeclaration, modifier: String) {
-        val capitalizedModifier =
-            modifier.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-        val message = "$capitalizedModifier declaration '${function.nameAsSafeName}' without explicit return type."
-        rule.report(CodeSmell(rule.issue, Entity.from(function), message))
     }
 
     private fun getBoolean(key: String, default: Boolean): Boolean {
