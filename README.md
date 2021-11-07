@@ -34,16 +34,20 @@ TBD
 
 ## Rules
 
-#### SpecifyFunctionExplicitReturnType SpecifyPropertyExplicitReturnType
+### SpecifyFunctionExplicitReturnType SpecifyPropertyExplicitReturnType
 
-Checks whether the type of function/property return value is explicitly specified.
+In most cases, functions or properties without an explicit type are harder to understand, and in some cases due to an
+implicit contract, it can lead to errors. Rule checks whether the type of function/property return value is explicitly
+specified.
 
-###### parameters
+**parameters**
 
-* checkPublic (default: true) - apply rule for public declarations
-* checkInternal (default: true) - apply rule for internal declarations
-* checkProtected (default: false) - apply rule for protected declarations
-* checkPrivate (default: false) - apply rule for private declarations
+* `checkPublic` (default: true) - apply rule for public declarations
+* `checkInternal` (default: true) - apply rule for internal declarations
+* `checkProtected` (default: false) - apply rule for protected declarations
+* `checkPrivate` (default: false) - apply rule for private declarations
 
 The visibility of a declaration is based on its modifier and the modifier of the class/object in which it is found. A
 common case is disabling the rule for private or protected declaration.
+
+[Unit-tests](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/SpecifyFunctionExplicitReturnTypeTest.kt)
