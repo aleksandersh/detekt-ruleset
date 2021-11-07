@@ -5,7 +5,7 @@ detekt [repository](https://github.com/detekt/detekt) for details.
 
 ## Setup in project
 
-1. Compile jar artifact `gradlew assemble`
+1. [Download](https://github.com/aleksandersh/detekt-ruleset/releases) the pre-compiled library jar artifact
 1. Move the artifact to a convenient place to use (for example, the project folder)
 1. Add the rule set properties to detekt configuration file (yml)
 1. Specify the artifact as detekt plugin
@@ -62,14 +62,14 @@ Compliant Code
 fun getProperties(): Map<String, String> = delegate.getProperties()
 ```
 
-parameters
+Parameters
 
 * `checkPublic` (default: true)
 * `checkInternal` (default: true)
 * `checkProtected` (default: false)
 * `checkPrivate` (default: false)
 
-unit-tests
+Unit-tests
 
 * [Function](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/SpecifyFunctionExplicitReturnTypeTest.kt)
 * [Property](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/SpecifyPropertyExplicitReturnTypeTest.kt)
@@ -94,14 +94,14 @@ class User(val name: String, val email: String)
 fun getUser(): User = createUser()
 ```
 
-parameters
+Parameters
 
 * `checkPublic` (default: true)
 * `checkInternal` (default: true)
 * `checkProtected` (default: false)
 * `checkPrivate` (default: false)
 
-unit-tests
+Unit-tests
 
 * [Function](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/AvoidFunctionTupleReturnTypeTest.kt)
 * [Property](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/AvoidPropertyTupleReturnTypeTest.kt)
@@ -116,6 +116,4 @@ unit-tests
 The visibility of a declaration is based on its modifier and the modifier of the class/object in which it is found. A
 common case is disabling the rule for private or protected declaration.
 
-unit-tests
-
-* [Visibility](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/DeclarationVisibilityCheckTest.kt)
+[Unit-tests](https://github.com/aleksandersh/detekt-ruleset/blob/master/src/test/kotlin/io/github/aleksandersh/detekt/ruleset/rule/DeclarationVisibilityCheckTest.kt)
